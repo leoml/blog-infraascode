@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# inicio
+
+Vagrant.configure("2") do |config|
+ 
+    config.vm.define "infra-as-code" do |node|
+      node.vm.box = "minimal/trusty64"
+      node.vm.hostname = "infra-as-code-01"
+      node.vm.box_url = "minimal/trusty64"
+      node.vm.boot_timeout = 3600
+
+      node.vm.network "private_network", type: "dhcp"
+
+      node.vm.provider :virtualbox do |v|
+        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        v.customize ["modifyvm", :id, "--memory", 512]
+        v.customize ["modifyvm", :id, "--name", "infra-as-code-01"]
+      end
+    end
+
+end
