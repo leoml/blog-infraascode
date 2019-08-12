@@ -1,7 +1,7 @@
- -*- mode: ruby -*-
+# -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Exercício 01
+# Exercício 02
 
 Vagrant.configure("2") do |config|
 
@@ -11,7 +11,10 @@ Vagrant.configure("2") do |config|
     config.vm.box_url = "minimal/trusty64"
     config.vm.boot_timeout = 3600
     config.vm.network "private_network", type: "dhcp"
-
+    # < Exercício 02 >
+    config.vm.network :forwarded_port, id:"IaC regra 01", guest:22,  host: 2240 , guest_ip: '10.0.2.15' , host_ip: '127.0.0.1', auto_correct: true
+    config.vm.network :forwarded_port, id:"IaC regra 02", guest:80,  host: 8040 , guest_ip: '10.0.2.15' , host_ip: '127.0.0.1', auto_correct: true
+    # </ Exercício 02 >
     config.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--memory", 512]
