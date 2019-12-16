@@ -1,0 +1,7 @@
+i-05d9f9b1ee9d8c952 {'Code': 16, 'Name': 'running'} [{'Key': 'Component_name', 'Value': 'fe-infra-as-code-02'}, {'Key': 'Component_tag', 'Value': 'front-end'}]
+i-0f9522d5296485c2d {'Code': 16, 'Name': 'running'} [{'Key': 'Component_tag', 'Value': 'front-end'}, {'Key': 'Component_name', 'Value': 'fe-infra-as-code-01'}]
+i-05c3b9c11084aa8ab {'Code': 16, 'Name': 'running'} [{'Key': 'Component_name', 'Value': 'fe-infra-as-code-02'}, {'Key': 'Component_tag', 'Value': 'front-end'}]
+i-09e9233befd8885bf {'Code': 16, 'Name': 'running'} [{'Key': 'Component_name', 'Value': 'db-infra-as-code-01'}, {'Key': 'Component_tag', 'Value': 'data-base'}]
+i-03f41d6e65083a97f {'Code': 16, 'Name': 'running'} [{'Key': 'Component_tag', 'Value': 'back-end'}, {'Key': 'Component_name', 'Value': 'be-infra-as-code-02'}]
+i-07de7b9755b30e33a {'Code': 16, 'Name': 'running'} [{'Key': 'Component_tag', 'Value': 'back-end'}, {'Key': 'Component_name', 'Value': 'be-infra-as-code-01'}]
+

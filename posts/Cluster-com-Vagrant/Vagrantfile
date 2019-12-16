@@ -1,0 +1,20 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Exercício 01
+
+Vagrant.configure("2") do |config|
+
+    hostname = "Infra-as-Code-k8s"
+    config.vm.box = "flixtech/kubernetes"
+    config.vm.hostname = hostname
+    config.vm.boot_timeout = 3600
+    config.vm.network "private_network", type: "dhcp"
+
+    config.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 512]
+      v.customize ["modifyvm", :id, "--name", hostname ]
+    end
+
+end

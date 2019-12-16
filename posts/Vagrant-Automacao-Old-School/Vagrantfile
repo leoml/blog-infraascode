@@ -1,0 +1,33 @@
+
+# Exercício 01
+
+$shellzinho = <<-SCRIPT
+echo Chamndo o meuu shellzinho...
+echo `date`  >> /home/vagrant/Shellzinho
+echo nameserver 8.8.8.8 >>/etc/resolv.conf
+apt-get update 
+apt-get install vim 
+apt-get install wget
+apt-get install nginx-full -y
+SCRIPT
+
+
+Vagrant.configure("2") do |config|
+
+    hostname = "Infra-as-Code-Old-School"
+    config.vm.box = "minimal/trusty64"
+    config.vm.hostname = hostname
+    config.vm.box_url = "minimal/trusty64"
+    config.vm.boot_timeout = 3600
+    config.vm.network "private_network", type: "dhcp"
+
+    config.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 512]
+      v.customize ["modifyvm", :id, "--name", hostname ]
+    end
+
+    config.vm.provision "shell", inline: $shellzinho
+
+
+end
