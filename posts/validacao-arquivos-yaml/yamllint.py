@@ -13,7 +13,7 @@ with open((sys.argv[1]), 'r') as stream:
     yaml.safe_load(stream)
     print("[OK] - File (%s) validate with success! " % sys.argv[1])
   except yaml.YAMLError as exc:
-    print("[Error] - File (%s) validated with error!" %  sys.argv[1])
+    print("[Error] - File (%s) not valid!" %  sys.argv[1])
     print(exc)
 
 #EOF

@@ -1,0 +1,13 @@
+Name          OS            IP         Mac                Arch           Mem  MemFree  MemUsed  CPUs  Virt              Disk avail          
+------------  ------------  ---------  -----------------  -------------  ---  -------  -------  ----  ----------------  ------------------  
+10.10.10.110  CentOS 6.6    10.0.2.15  08:00:27:82:a5:89  x86_64/x86_64  0g   0g       0g       1     virtualbox/guest  0.0g, 35.0g, 38.0g  
+10.10.10.106  CentOS 6.6    10.0.2.15  08:00:27:82:a5:89  x86_64/x86_64  0g   0g       0g       1     virtualbox/guest  0.0g, 35.0g, 38.0g  
+10.10.10.107  CentOS 7.0    10.0.2.15  08:00:27:59:2b:bc  x86_64/x86_64  0g   0g       0g       1     virtualbox/guest  0.0g, 77.0g         
+10.10.10.104  CentOS 6.6    10.0.2.15  08:00:27:82:a5:89  x86_64/x86_64  0g   0g       0g       1     virtualbox/guest  0.0g, 35.0g, 38.0g  
+10.10.10.105  Ubuntu 16.04  10.0.2.15  08:00:27:42:0e:40  x86_64/x86_64  0g   0g       0g       1     virtualbox/guest  0.0g, 53.0g         
+10.10.10.102  CentOS 7.0    10.0.2.15  08:00:27:59:2b:bc  x86_64/x86_64  0g   0g       0g       1     virtualbox/guest  0.0g, 77.0g         
+10.10.10.103  CentOS 7.0    10.0.2.15  08:00:27:59:2b:bc  x86_64/x86_64  0g   0g       0g       1     virtualbox/guest  0.0g, 77.0g         
+10.10.10.100  Ubuntu 18.04  10.0.2.15  08:00:27:6d:95:c4  x86_64/x86_64  1g   0g       1g       1     virtualbox/guest  58.0g               
+10.10.10.101  CentOS 6.6    10.0.2.15  08:00:27:82:a5:89  x86_64/x86_64  0g   0g       0g       1     virtualbox/guest  0.0g, 35.0g, 38.0g  
+10.10.10.108  Ubuntu 16.04  10.0.2.15  08:00:27:42:0e:40  x86_64/x86_64  0g   0g       0g       1     virtualbox/guest  0.0g, 53.0g         
+10.10.10.109  Ubuntu 14.04  10.0.2.15  08:00:27:20:c5:44  x86_64/x86_64  0g   0g       0g       1     virtualbox/guest  37.0g               
