@@ -1,0 +1,56 @@
+- name: -= Minikube set up =-
+  hosts: localhost
+  vars:
+    local_user: infraascode
+    kubectl_version: "v1.18.3"
+  become: true
+
+  tasks:
+    - name: -= Install packages =-
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - docker
+        - docker.io
+        - docker-containerd
+        - yamllint
+        - conntrack
+
+    - name: -= Add the user Infra as code =-
+      user:
+        name: "{{ local_user }}"
+        comment: Infra as code
+        password: $1$ZMzmP4r5$XRc0/vgQh2TNaPh8s092V.
+        shell: /bin/bash
+        groups: docker
+        append: yes
+
+    - name: -= Add sudo to user {{ local_user }} =-
+      lineinfile:
+        path: "/etc/sudoers.d/99_{{ local_user }}"
+        line: "{{ local_user }} ALL=(ALL:ALL) NOPASSWD:ALL"
+        create: yes
+
+    - name: -= How to start minikube =-
+      blockinfile:
+        path: /home/{{ local_user }}/.bashrc
+        insertafter: EOF
+        block: |
+          clear
+          echo "####################################"
+          echo " "
+          echo  minikube start --vm-driver=docker
+          echo " "
+          echo "####################################"
+
+    - name: -= Download Minikube and Kubectl =-
+      get_url:
+        url: "{{ item.url }}"
+        dest: "/usr/local/bin/{{ item.name }}"
+        mode: '0775'
+      with_items:
+        - { url: 'https://storage.googleapis.com/kubernetes-release/release/{{ kubectl_version }}/bin/linux/amd64/kubectl', name: 'kubectl' }
+        - { url: 'https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64', name: 'minikube' }
+
+#EOF

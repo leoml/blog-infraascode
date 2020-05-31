@@ -1,0 +1,24 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-infraascode
+  labels:
+    app: nginx-infraascode
+    namespace: infraascode
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-infraascode
+  template:
+    metadata:
+      labels:
+        app: nginx-infraascode
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80

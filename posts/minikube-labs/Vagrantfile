@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant.configure("2") do |config|
+
+    hostname = "minikube"
+    config.vm.box = "bento/ubuntu-18.04"
+    config.vm.hostname = hostname
+    config.vm.box_url = "bento/ubuntu-18.04"
+    config.vm.boot_timeout = 3600
+    config.vm.network "private_network", type: "dhcp"
+    config.vm.network :forwarded_port, id:"IaC regra 01", guest:22,  host: 2291 , guest_ip: '10.0.2.15' , host_ip: '127.0.0.1', auto_correct: true
+    config.vm.network :forwarded_port, id:"IaC regra 02", guest:80,  host: 8091 , guest_ip: '10.0.2.15' , host_ip: '127.0.0.1', auto_correct: true
+    config.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 2048]
+      v.customize ["modifyvm", :id, "--name", hostname ]
+      v.customize ["modifyvm", :id, "--cpus", 2]
+    end
+    config.vm.provision "shell",
+      inline: "sudo apt update ; sudo apt install python3-pip -y; sudo pip3 install ansible; \
+      sudo ansible-playbook -i localhost /vagrant/minikube_playbook.yaml"
+end
+
+#EOF
