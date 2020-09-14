@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: deploy-iac
+  name: deploy-iac
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploy-iac
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: deploy-iac
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+status: {}

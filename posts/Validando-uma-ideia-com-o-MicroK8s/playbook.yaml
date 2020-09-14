@@ -1,0 +1,68 @@
+---
+- hosts: localhost,all
+  remote_user: vagrant
+  become: true
+  vars:
+    iac_user: "iack8s"
+    k8s_user_homedir: "/home/iack8s"
+
+    hosts_list:
+      - "10.10.100.200   iac-microk8s-m"
+      - "10.10.100.201   iac-microk8s-w"
+
+  tasks:
+
+  - name: Configura /etc/hosts
+    lineinfile:
+      dest: /etc/hosts
+      state: present
+      line: "{{ item }}"
+    with_items:
+      - "{{ hosts_list }}"
+
+  - name: Remove swapfile from /etc/fstab
+    mount:
+      name: "{{ item }}"
+      fstype: swap
+      state: absent
+    with_items:
+       - swap
+       - none
+
+  - name: Install basic packages
+    snap:
+      name: "microk8s"
+      state: present
+      classic: yes
+      channel: 1.18/stable
+
+  - name: Disable swap
+    command: swapoff -a
+    when: ansible_swaptotal_mb > 0
+
+  - name: "Add user management {{ iac_user }}"
+    user:
+      name: '{{ iac_user }}'
+      password: $6$WpA1Fzrw/OTU$V5uXr0Zf1dVV44g5wDySvKxdlktXveuqYSudh1ykUQmj6E3HX7BNi9cD4Rz4wCm/Fi6jcZmG.nJcDsQwnV6qp1
+      shell: '/bin/bash'
+      state: 'present'
+      groups: 'microk8s'
+
+  - name: Create a directory if it does not exist
+    file:
+      path: "{{ k8s_user_homedir }}/.kube"
+      state: directory
+      mode: '0750'
+      owner: "{{ iac_user }}"
+      group: "{{ iac_user }}"
+
+  - name: Adding featureflag into /etc/sudoers
+    lineinfile:
+      dest: '/etc/sudoers.d/99_{{ item }}'
+      regexp: '^{{ item }}'
+      line: '{{ item }}  ALL=(ALL:ALL) NOPASSWD: ALL'
+      create: yes
+    with_items:
+      - "{{ iac_user }}"
+
+#EOF

@@ -1,0 +1,44 @@
+# vi: set ft=ruby :
+
+vhosts =[
+  { :hostname => "iac-microk8s-m",
+    :fssh_port => "2270",
+    :fweb_port => "8070",
+    :box => "bento/ubuntu-20.04",
+    :ip =>"10.10.100.200",
+    :profile => "microk8",
+    :memory => "4096"},
+    { :hostname => "iac-microk8s-w",
+    :fssh_port => "2271",
+    :fweb_port => "8071",
+    :box => "bento/ubuntu-20.04",
+    :ip =>"10.10.100.201",
+    :profile => "microk8",
+    :memory => "2048"},
+]
+
+Vagrant.configure("2") do |config|
+
+  vhosts.each do |vhost|
+
+    config.vm.define vhost[:hostname] do |node|
+      node.vm.box = vhost[:box]
+      node.vm.hostname = vhost[:hostname]
+      node.vm.box_url = vhost[:box]
+      node.vm.boot_timeout = 3600
+      node.vm.network :private_network, ip: vhost[:ip], virtualbox__intnet: true
+      node.vm.network :forwarded_port, id:"microk8 01", guest:22, host: vhost[:fssh_port], host_ip: "127.0.0.1", auto_correct: true
+      node.vm.network :forwarded_port, id:"microk8 02", guest:80, host: vhost[:fweb_port], host_ip: "127.0.0.1", auto_correct: true
+
+      node.vm.provider :virtualbox do |v|
+        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        v.customize ["modifyvm", :id, "--memory", vhost[:memory]]
+        v.customize ["modifyvm", :id, "--name", vhost[:hostname]]
+        v.customize ["modifyvm", :id, "--cpus", 2]
+      end
+      node.vm.provision :shell, inline: "sudo apt-get update ; sudo apt-get install python3-pip -y; sudo pip3 install ansible"
+      node.vm.provision :shell, inline: "sudo ansible-playbook -i localhost /vagrant/playbook.yaml"
+    end
+  end
+
+end
