@@ -13,7 +13,7 @@ graph_attr = {
     "bgcolor": "white"
 }
 
-with Diagram("Infra as <Code> - Arestas", direction="TB", filename="diagrama_infra_as_code_arestas", graph_attr=graph_attr):
+with Diagram("Infra as <Code> - Arestas", direction="TB", filename="diagrama_infra_as_code_arestas", outformat="png", graph_attr=graph_attr):
 
     with Cluster("Cluster Servidores"):
         servers_fe = [Server("Server1"),

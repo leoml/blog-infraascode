@@ -1,0 +1,15 @@
+---
+
+- hosts: nginx_lb
+  roles:
+    - role: nginx-lb
+
+- hosts: nginx_web
+  roles:
+    - role: nginx-web
+
+- hosts: client
+  roles:
+    - role: client
+
+#EOF

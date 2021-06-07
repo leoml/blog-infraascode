@@ -1,0 +1,32 @@
+---
+
+- name: Configura /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    state: present
+    line: "{{ item }}"
+  with_items:
+    - '10.10.100.202 roundrobin.infraascode.com.br'
+    - '10.10.100.202 wroundrobin.infraascode.com.br'
+    - '10.10.100.202 leastconnection.infraascode.com.br'
+    - '10.10.100.202 iphash.infraascode.com.br'
+    - '10.10.100.203 iac-web01.infraascode.com.br'
+    - '10.10.100.204 iac-web02.infraascode.com.br'
+    - '10.10.100.205 iac-web03.infraascode.com.br'
+  become: true
+  tags:
+    client
+
+- name: Test load balancing 
+  copy:
+    dest: "/home/vagrant/test_lb.sh"
+    src: test_lb.sh
+    mode: 0755
+    owner: vagrant
+    group: vagrant
+  become: true
+  tags:
+    client
+
+
+#EOF

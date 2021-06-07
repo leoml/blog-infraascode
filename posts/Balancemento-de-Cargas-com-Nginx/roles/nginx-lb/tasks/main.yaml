@@ -1,0 +1,93 @@
+---
+
+- name: Install Nginx
+  apt: 
+    name: 
+      - nginx
+    state: present 
+  become: yes
+  tags:
+    - nginx-lb
+
+- name: Configura /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    state: present
+    line: "{{ item }}"
+  with_items:
+    - '10.10.100.202 roundrobin.infraascode.com.br'
+    - '10.10.100.202 wroundrobin.infraascode.com.br'
+    - '10.10.100.202 leastconnection.infraascode.com.br'
+    - '10.10.100.202 iphash.infraascode.com.br'
+    - '10.10.100.202 logs.infraascode.com.br'
+    - '10.10.100.202 nginx-lb.infraascode.com.br'
+    - '10.10.100.203 iac-web01.infraascode.com.br'
+    - '10.10.100.204 iac-web02.infraascode.com.br'
+    - '10.10.100.205 iac-web03.infraascode.com.br'
+  become: true
+  tags:
+    nginx-lb
+
+- name: Remove default configuration
+  shell:
+    cmd: rm /etc/nginx/sites-available/default
+  ignore_errors: yes
+  become: true
+  tags:
+    nginx-lb
+
+- name: Remove default configuration
+  shell:
+    cmd: rm /etc/nginx/sites-enabled/default
+  ignore_errors: yes
+  become: true
+  tags:
+    nginx-lb
+
+- name: Apply Nginx configuration
+  template:
+    src:  "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+  - { src: nginx-lb-roundrobin.conf, dest: "/etc/nginx/sites-available/nginx-lb-roundrobin.conf" }
+  - { src: nginx-lb-wroundrobin.conf, dest: "/etc/nginx/sites-available/nginx-lb-wroundrobin.conf" }
+  - { src: nginx-lb-iphash.conf, dest: "/etc/nginx/sites-available/nginx-lb-iphash.conf" }
+  become: true
+  tags:
+    nginx-lb
+
+- name: Create a symbolic link
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    force: yes
+    state: link
+  with_items:
+  - { src: "/etc/nginx/sites-available/nginx-lb-roundrobin.conf", dest: "/etc/nginx/sites-enabled/nginx-lb-roundrobin.conf" }
+  - { src: "/etc/nginx/sites-available/nginx-lb-wroundrobin.conf", dest: "/etc/nginx/sites-enabled/nginx-lb-wroundrobin.conf" }
+  - { src: "/etc/nginx/sites-available/nginx-lb-iphash.conf", dest: "/etc/nginx/sites-enabled/nginx-lb-iphash.conf" }
+  - { src: "/etc/nginx/sites-available/nginx-lb-logs.conf", dest: "/etc/nginx/sites-enabled/nginx-lb-logs.conf" }
+  become: true
+  tags:
+    nginx-lb
+
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
+  become: true
+  tags:
+    nginx-lb
+
+- name: Test report 
+  copy:
+    dest: "/home/vagrant/test_report.sh"
+    src: test_report.sh
+    mode: 0755
+    owner: vagrant
+    group: vagrant
+  become: true
+  tags:
+    nginx-lb
+
+#EOF

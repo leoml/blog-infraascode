@@ -1,0 +1,100 @@
+---
+
+- name: Install Nginx
+  apt: 
+    name: 
+      - nginx
+    state: present
+  become: yes
+  tags:
+    - nginx-web
+
+- name: Configura /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    state: present
+    line: "{{ item }}"
+  with_items:
+    - '10.10.100.202 roundrobin.infraascode.com.br'
+    - '10.10.100.202 wroundrobin.infraascode.com.br'
+    - '10.10.100.202 leastconnection.infraascode.com.br'
+    - '10.10.100.202 iphash.infraascode.com.br'
+    - '10.10.100.202 logs.infraascode.com.br'
+    - '10.10.100.202 nginx-lb.infraascode.com.br'
+    - '10.10.100.203 iac-web01.infraascode.com.br'
+    - '10.10.100.204 iac-web02.infraascode.com.br'
+    - '10.10.100.205 iac-web03.infraascode.com.br'
+  become: true
+  tags:
+    nginx-web
+
+- name: Nginx Root dir roundrobin
+  file:
+    path: /mnt/roundrobin
+    state: directory
+    mode: 0755
+    owner: www-data
+    group: www-data
+    recurse: yes
+  become: true
+  tags:
+    nginx-web
+
+- name: Nginx home page
+  template:
+    src: index.html
+    dest: /mnt/roundrobin/index.html
+    owner: www-data
+    group: www-data
+    mode: 0644
+  become: true
+  tags:
+    nginx-web
+
+- name: Remove default configuration
+  shell:
+    cmd: rm /etc/nginx/sites-available/default
+  ignore_errors: yes
+  become: true
+  tags:
+    nginx-web-link
+
+- name: Remove default configuration
+  shell:
+    cmd: rm /etc/nginx/sites-enabled/default
+  ignore_errors: yes
+  become: true
+  tags:
+    nginx-web-link
+
+- name: Apply Nginx configuration
+  template:
+    src:  "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+  - { src: nginx-web-roundrobin.conf, dest: "/etc/nginx/sites-available/nginx-web-roundrobin.conf" }
+  become: true
+  tags:
+    nginx-web
+
+- name: Create a symbolic link
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    force: yes
+    state: link
+  with_items:
+  - { src: "/etc/nginx/sites-available/nginx-web-roundrobin.conf", dest: "/etc/nginx/sites-enabled/nginx-web-roundrobin.conf" }
+  become: true
+  tags:
+    nginx-web
+
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
+  become: true
+  tags:
+    nginx-web
+
+#EOF
