@@ -10,6 +10,7 @@
     - '10.10.100.202 wroundrobin.infraascode.com.br'
     - '10.10.100.202 leastconnection.infraascode.com.br'
     - '10.10.100.202 iphash.infraascode.com.br'
+    - '10.10.100.202 iphashraddr.infraascode.com.br'
     - '10.10.100.203 iac-web01.infraascode.com.br'
     - '10.10.100.204 iac-web02.infraascode.com.br'
     - '10.10.100.205 iac-web03.infraascode.com.br'

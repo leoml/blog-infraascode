@@ -19,6 +19,7 @@
     - '10.10.100.202 wroundrobin.infraascode.com.br'
     - '10.10.100.202 leastconnection.infraascode.com.br'
     - '10.10.100.202 iphash.infraascode.com.br'
+    - '10.10.100.202 iphashraddr.infraascode.com.br'
     - '10.10.100.202 logs.infraascode.com.br'
     - '10.10.100.202 nginx-lb.infraascode.com.br'
     - '10.10.100.203 iac-web01.infraascode.com.br'
@@ -52,6 +53,7 @@
   - { src: nginx-lb-roundrobin.conf, dest: "/etc/nginx/sites-available/nginx-lb-roundrobin.conf" }
   - { src: nginx-lb-wroundrobin.conf, dest: "/etc/nginx/sites-available/nginx-lb-wroundrobin.conf" }
   - { src: nginx-lb-iphash.conf, dest: "/etc/nginx/sites-available/nginx-lb-iphash.conf" }
+  - { src: nginx-lb-iphash-raddr.conf, dest: "/etc/nginx/sites-available/nginx-lb-iphash-raddr.conf" }
   become: true
   tags:
     nginx-lb
@@ -66,6 +68,7 @@
   - { src: "/etc/nginx/sites-available/nginx-lb-roundrobin.conf", dest: "/etc/nginx/sites-enabled/nginx-lb-roundrobin.conf" }
   - { src: "/etc/nginx/sites-available/nginx-lb-wroundrobin.conf", dest: "/etc/nginx/sites-enabled/nginx-lb-wroundrobin.conf" }
   - { src: "/etc/nginx/sites-available/nginx-lb-iphash.conf", dest: "/etc/nginx/sites-enabled/nginx-lb-iphash.conf" }
+  - { src: "/etc/nginx/sites-available/nginx-lb-iphash-raddr.conf", dest: "/etc/nginx/sites-enabled/nginx-lb-iphash-raddr.conf" }
   - { src: "/etc/nginx/sites-available/nginx-lb-logs.conf", dest: "/etc/nginx/sites-enabled/nginx-lb-logs.conf" }
   become: true
   tags:

@@ -2,6 +2,8 @@
 
 echo  "-= ESTATÍSTICAS DE ACESSOS =-"
 echo "----------------------------"
+echo "-= IPHash Addr =-"
+cat /var/log/nginx/nginx-iphash-raddr-access.log |awk -F " " '{ print $4}'|sort | uniq -c
 echo "-= IPHash =-"
 cat /var/log/nginx/nginx-iphash-access.log |awk -F " " '{ print $4}'|sort | uniq -c
 echo "-= WRoundrobin =-"
